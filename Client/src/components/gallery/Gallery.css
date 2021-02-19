@@ -1,0 +1,47 @@
+.container {
+  margin: auto;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px 0px;
+  margin-left: 15px;
+}
+
+img {
+  display: block;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.image {
+  max-height: 100px;
+  max-width: 100px;
+  border: 1px solid black;
+}
+
+@media screen and (min-width: 600px) {
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* justify-content: space-around;
+    margin: auto; */
+  }
+
+  img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .image {
+    max-height: 200px;
+    max-width: 200px;
+    border: 1px solid black;
+    margin: 0 20px;
+  }
+}
