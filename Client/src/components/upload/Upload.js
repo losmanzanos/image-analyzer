@@ -45,17 +45,7 @@ const FileUpload = () => {
               await ImageApiService.postImage(url);
               return ImageApiService.getLabel(url);
             })
-            // .then(async (url, next) => {
-            //   const body = { url };
-            //   const response = await fetch("http://localhost:9001/images", {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify(body),
-            //   });
-            //   console.log(body);
-            // })
             .then(async (features) => {
-              // console.log(features, "Post features");
               await ImageApiService.postFeatures(
                 imageURL,
                 features.responses[0].webDetection.bestGuessLabels
@@ -82,11 +72,7 @@ const FileUpload = () => {
           <img id="load" src={loadImg} alt="loading" />
         </div>
       ) : (
-        <div id="results" className="hidden">
-          {/* <p>Image URL: {url}</p>
-          <img className="upload" src={url} />
-          <p>Label: {}</p> */}
-        </div>
+        <div id="results" className="hidden"></div>
       )}
 
       <div className="buttons">
