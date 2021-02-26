@@ -1,0 +1,58 @@
+.quote {
+  height: 125px;
+  margin-bottom: 15px;
+  padding: 15px 15px;
+}
+
+#loading {
+  height: 150px;
+  margin-top: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: "Dancing Script", cursive;
+  padding-top: 10px;
+  font-size: 50px;
+}
+
+.text {
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+}
+
+.author {
+  font-family: "Roboto", sans-serif;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.hover {
+  color: black;
+}
+
+.hover:hover {
+  color: rgb(238, 79, 105);
+  text-decoration: none;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.Header__logged-in,
+.Header__not-logged-in {
+  padding-bottom: 15px;
+}
+
+#Harold {
+  height: 75px;
+  width: auto;
+}
+
+.Harold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}

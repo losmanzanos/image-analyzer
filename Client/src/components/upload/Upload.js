@@ -15,8 +15,11 @@ const FileUpload = () => {
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
   const onChange = (e) => {
-    setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name);
+    console.log("onChange", e.target.files);
+    if (e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+      setFilename(e.target.files[0].name);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -50,7 +53,7 @@ const FileUpload = () => {
                 imageURL,
                 features.responses[0].webDetection.bestGuessLabels
               );
-
+              setFile(null);
               setLastUpdate(new Date());
               setLoading(false);
               await document
@@ -64,6 +67,8 @@ const FileUpload = () => {
     } finally {
     }
   };
+
+  console.log("file", file);
 
   return (
     <>
@@ -83,12 +88,12 @@ const FileUpload = () => {
             style={{ display: "none" }}
             onChange={onChange}
           />
+          {file ? <input type="submit" value="Upload" /> : null}
           <input
             type="button"
             value="Browse"
             onClick={() => document.getElementById("custom").click()}
           />
-          <input type="submit" value="Upload" />
         </form>
       </div>
       <Gallery lastUpdate={lastUpdate} />

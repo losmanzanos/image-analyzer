@@ -3,10 +3,13 @@ const app = express();
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const cors = require("cors");
-const pool = require("./db");
+const pool = require("../db");
 const path = require("path");
 const PORT = process.env.PORT || 9001;
-const uploadImage = require("./helpers/helpers");
+const uploadImage = require("../helpers/helpers");
+const authRouter = require("./auth/auth-router");
+const usersRouter = require("./users/users-router");
+const { requireAuth } = require("./middleware/jwt-auth");
 
 const multerMid = multer({
   storage: multer.memoryStorage(),
@@ -24,6 +27,9 @@ app.use(multerMid.single("file"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use("/auth", authRouter);
+app.use("/users", usersRouter);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client/build")));
 }
@@ -35,12 +41,12 @@ app.get("/", (req, res) => {
 });
 
 //Post an ImageURL
-app.post("/images", async (req, res) => {
+app.post("/images", requireAuth, async (req, res) => {
   try {
     const { imageURL } = req.body;
     const newImageURL = await pool.query(
-      "INSERT INTO images (url) VALUES ($1) RETURNING *",
-      [imageURL]
+      "INSERT INTO images (url, user_id) VALUES ($1, $2) RETURNING *",
+      [imageURL, req.user.id]
     );
 
     res.json(newImageURL.rows[0]);
@@ -50,9 +56,12 @@ app.post("/images", async (req, res) => {
 });
 
 //Get ALL ImageURLs
-app.get("/images", async (req, res) => {
+app.get("/images", requireAuth, async (req, res) => {
   try {
-    const allImages = await pool.query("SELECT * FROM images");
+    const allImages = await pool.query(
+      "SELECT * FROM images where user_id = $1",
+      [req.user.id]
+    );
 
     res.json(allImages.rows);
   } catch (err) {
@@ -130,6 +139,7 @@ app.post("/uploads", async (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(500).json({
     error: err,
     message: "Internal server error!",
@@ -152,6 +162,4 @@ app.get("/features/:id", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on PORT: ${PORT}...`);
-});
+module.exports = app;

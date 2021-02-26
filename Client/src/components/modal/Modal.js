@@ -3,6 +3,8 @@ import "./Modal.css";
 import imageAPIService from "../../services/image-api-service";
 
 const Modal = (props) => {
+  const [confirm, setConfirm] = useState(false);
+
   const [features, setFeatures] = useState([]);
   useEffect(() => {
     if (!props.show.id) {
@@ -19,6 +21,7 @@ const Modal = (props) => {
 
   const closeModal = () => {
     props.setShow(false);
+    setConfirm(false);
   };
 
   const deleteImage = () => {
@@ -29,16 +32,17 @@ const Modal = (props) => {
 
     console.log("Deleted!");
   };
+  console.log(features);
 
   return (
-    <div className="modal" key={props.id}>
+    <div className="modal">
       <div className="modal-content">
         <span className="close" onClick={closeModal}>
           &times;
         </span>
         <img className="modal-image" src={props.show.url} />
         {features.map((feature) => (
-          <p>
+          <p key={feature.id}>
             Label:{" "}
             {feature.label.replace(/(?:^|\s)\S/g, function (a) {
               return a.toUpperCase();
@@ -46,7 +50,14 @@ const Modal = (props) => {
           </p>
         ))}
         <br />
-        <button onClick={deleteImage}>Delete</button>
+        {confirm ? (
+          <>
+            <button onClick={deleteImage}>Confirm</button>
+            <button onClick={() => setConfirm(false)}>Cancel</button>
+          </>
+        ) : (
+          <button onClick={() => setConfirm(true)}>Delete</button>
+        )}
       </div>
     </div>
   );

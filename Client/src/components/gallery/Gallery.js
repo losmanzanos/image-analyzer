@@ -14,9 +14,7 @@ function Gallery(props) {
   console.log("Gallery", data);
 
   const getData = () => {
-    fetch(`http://localhost:9001/images`)
-      .then((res) => res.json())
-      .then((json) => setData(json));
+    ImageApiService.getImages().then((json) => setData(json));
   };
 
   const showModal = (image) => {
@@ -25,33 +23,19 @@ function Gallery(props) {
 
   const images = data.map((image) => {
     return (
-      <>
-        <div className="image" key={image.id}>
-          <img
-            src={image.url}
-            onClick={(e) => {
-              showModal(image);
-            }}
-          />
-        </div>
-
-        {/* <div className="col-sm-12 col-md-4">
-          <a class="lightbox" href={image.url}>
-            <img
-              src={image.url}
-              onClick={(e) => {
-                showModal(image);
-              }}
-            />
-          </a>
-        </div> */}
-      </>
+      <div className="image" key={image.id}>
+        <img
+          src={image.url}
+          onClick={(e) => {
+            showModal(image);
+          }}
+        />
+      </div>
     );
   });
 
   return (
     <div className="container">
-      {/* <p>Gallery</p> */}
       <Modal
         show={show}
         setShow={setShow}
